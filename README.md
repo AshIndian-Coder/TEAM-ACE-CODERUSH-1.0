@@ -335,7 +335,7 @@ Time needed: Under 3 minutes for full demo. All controls work in any order, no r
 
 This guide tells you exactly what to click and what to type, and what you should see as proof of correctness.
 
-0. Setup (If running locally)
+## 0. Setup (If running locally)
 If you're a judge running from your end:
 
 Frontend only (no backend, works offline, recommended for quick judge):
@@ -411,7 +411,7 @@ Add Doctor to Hospital Roster
 Repeat for 2-3 doctors with different specialties
 Quick alternative: Click Load Sample Near GPS button top-right → auto-creates 1 hospital + 3 villages + roads + 1 ambulance around your real GPS with random spread — instant testing.
 
-2. Register Patient — Illness + Symptoms + Live Location (Main Input)
+## 2. Register Patient — Illness + Symptoms + Live Location (Main Input)
 Go to Patients page (sidebar → Patients, at top):
 
 Click Register New Patient → form opens:
@@ -446,7 +446,8 @@ text
 Map: Village (small gray dot), Hospital (green square ring if has capacity, red if full), Ambulance custom SVG (white with colored base, pointing direction of travel with bearing), Active Route teal or red for critical, animates via requestAnimationFrame proportional to travelTime (5-12s on screen)
 Active Dispatches overlay top-right shows your request with urgency badge and status EN_ROUTE with progress bar 2px bottom animating
 ComparisonPanel auto-opens bottom center: Left Naive Nearest shows distance-only pick and which constraint it violated (e.g., "lacks Cardiologist"), Right RouMi Optimized shows feasible pick with cost, travel, visited nodes — proves USP as fact
-3. Test Edge Cases — Operations Bar (Hover to Slide In)
+
+## 3. Test Edge Cases — Operations Bar (Hover to Slide In)
 Left edge has dark blue tab OPS vertical — hover it → Operations panel slides in from left (spring 340/30), 320px wide, white background. Pin button top-right turns teal when pinned to stay open.
 
 Buttons to click (any order, no reload, independently triggerable):
@@ -469,7 +470,8 @@ Dispatch CRITICAL cardiac at village near you
 Watch ambulance move along route (custom SVG rotating to bearing)
 Mid-transit, click Fill Beds on assigned hospital OR toggle its cardiologist off-duty in Doctors page
 Watch flash → fade → beat → redraw + Decision Log narrates release → re-filter → re-select new hospital → reserve → re-route live
-4. Live Location Tracker — Real GPS
+
+## 4. Live Location Tracker — Real GPS
 Go to Live Tracker page (sidebar → Live Tracker, orange Live badge):
 
 Map: Colorful OpenStreetMap tiles (green fields, orange roads) — not gray (Arena preview blocks network, so map gray in preview, but colorful in Vercel/localhost)
@@ -480,7 +482,8 @@ Real GPS: If you allowed location, top shows your real GPS banner. In preview, s
 If you want to test real GPS in production:
 
 Deploy to Vercel → open on phone → allow location → your phone's real GPS appears as patient origin
-5. Proof Panels — For Algorithmic Correctness (40%) + Efficiency (20%)
+
+## 5. Proof Panels — For Algorithmic Correctness (40%) + Efficiency (20%)
 Analytics page (sidebar → Analytics):
 
 Routing Performance card → BenchmarkPanel
@@ -496,7 +499,8 @@ Decision Log:
 
 Scrollable mono terminal, aria-live=polite, rejected in tertiary + critical border, selected in primary + accent border, success in green
 Every string templated from real engine output, never hardcoded — explicitly what separates high and low scores
-6. Expected Inputs Summary
+
+## 6. Expected Inputs Summary
 Page	Input Fields	Example Input	What Happens
 Data Manager → Add Hospital	Name, Lat (Use GPS + Spread), Lng, Beds, Specialists checkboxes, Medicine qty	District Hospital Pune, 19.082,72.891, 20 beds, Cardiologist, Cardiac Drug X 10	Creates hospital node + hospital entity, appears on map
 Data Manager → Add Village	Name, Lat (Use GPS + Spread), Lng	Khadakwadi, 19.102,72.901	Creates village node, patient origin
@@ -505,7 +509,8 @@ Data Manager → Add Ambulance	ID, Use Manual GPS checkbox, Lat/Lng (Use GPS + S
 Data Manager → Add Doctor	Name, Specialty, Hospital, On/Off Duty toggle	Dr. Priya Sharma, Cardiologist, District Hospital, On Duty	Adds to roster, affects hospital eligibility
 Patients → Register	Patient Name, Illness Type dropdown, Symptoms textarea, Description textarea, Live Location (Get Real GPS or Manual Lat/Lng)	Ramesh Kumar, Cardiac Emergency, chest pain, difficulty breathing, 19.0760,72.8777	Auto triage sets CRITICAL/HIGH etc, dispatches via filter→score→reserve→A*
 Operations Bar	Buttons: Critical, Medium, Burst x5, Block/Reopen Road, Fill Beds, Deplete Medicine, Occupy/Free AMB, Reset	Click any	Triggers edge case, logs real output, tests resilience
-7. Judge Demo Script (Under 3 Minutes)
+
+## 7. Judge Demo Script (Under 3 Minutes)
 Open Data Manager → if empty, click Load Sample Near GPS (creates data around your real location) or add 1 hospital + 1 village + 1 road + 1 ambulance manually with GPS + Spread
 Go to Dashboard → see KPIs: Active, Critical, Available AMB, Bed Occupancy with colored cards and progress bars
 Patients → Register New Patient → Name: Ramesh, Illness: Cardiac Emergency, Symptoms: chest pain, difficulty breathing, sweating → Get My Real Location (or manual 19.0760,72.8777 in preview) → Register as CRITICAL (auto score 85/100)
@@ -524,7 +529,8 @@ Functional 15% (full dispatch pipeline works)
 Edge Cases 10% (all buttons independently triggerable)
 UI Demo 10% (ops console dense, precise, mono numbers, Figma slide animations)
 Code Quality 5% (TypeScript strict, zero any, 17 Vitest tests)
-8. After Adding Data
+
+## 8. After Adding Data
 Data persists in localStorage (frontend-only) or data.json (backend) — refresh keeps your real hospitals
 Export JSON in Data Manager to backup your real network
 Clear All to start over
@@ -534,6 +540,10 @@ You are ready for judges.
 1. OpenStreetMap Tile API
 2. Geolocation API
 3. Socket.IO Real-time API (for Render)
+
+## Ai Used
+1.Deepseek (for research purposes)
+2.Figma (for UI/UX)
 
 Built for CodeRush 1.0 — Algorithmic Correctness 40% + Efficiency 20% = 60% proved live, not claimed.
 >>>>>>> 5a0d76d (RouMi v1.0 ready)
