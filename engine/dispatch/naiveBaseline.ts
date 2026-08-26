@@ -1,7 +1,4 @@
-/**
- * naiveBaseline - Distance-only assignment ignoring specialty/bed/medicine
- * Used ONLY by comparison view to show what would have gone wrong
- */
+
 
 import type { Hospital, PatientRequest } from '../domain/types';
 import type { Graph } from '../graph/Graph';
@@ -51,7 +48,7 @@ export function naiveNearestHospitalAssign(
     };
   }
 
-  // Find nearest by straight-line distance only
+ 
   let nearest: Hospital | null = null;
   let minDist = Infinity;
 
@@ -74,7 +71,7 @@ export function naiveNearestHospitalAssign(
     };
   }
 
-  // Now check what constraints it violates (for UI explanation)
+ 
   let violated: string | undefined;
   let reason: string;
 
@@ -93,7 +90,7 @@ export function naiveNearestHospitalAssign(
     violated = 'medicine';
     reason = `Nearest hospital ${nearest.name} (${minDist.toFixed(1)}km) lacks required medicine: ${request.medicineRequired} x${request.medicineQty}. Treatment would be impossible on arrival.`;
   } else {
-    // Check reachability
+   
     const route = astar(graph, request.originNode, nearest.nodeId);
     if (!route.feasible) {
       violated = 'reachability';
@@ -117,7 +114,7 @@ export function naiveNearestHospitalAssign(
     };
   }
 
-  // Try to get route for distance display
+ 
   const route = astar(graph, request.originNode, nearest.nodeId);
 
   return {
