@@ -211,5 +211,10 @@ Real hospital data via secure FHIR APIs, offline-first PWA with local-language v
 11. Open BenchmarkPanel → Run 1k nodes → show A* vs Dijkstra avg/p95/req/s live + green costs match
 12. Close with Decision Log as audit trail — every rejection/selection with real reason and cost, never hardcoded string.
 
+## Api Used
+1. OpenStreetMap Tile API
+2. Geolocation API
+3. Socket.IO Real-time API (for Render)
+
 Built for CodeRush 1.0 — Algorithmic Correctness 40% + Efficiency 20% = 60% proved live, not claimed.
 >>>>>>> 5a0d76d (RouMi v1.0 ready)
