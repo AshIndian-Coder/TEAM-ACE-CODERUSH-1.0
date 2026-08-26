@@ -1,0 +1,94 @@
+/* Calibri + vibrant hospital grading - Mayo #012D61, Apollo #2582A1, Cleveland #0078BF */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-canvas: #EEF4FA;
+  --bg-canvas-2: #E6EFF7;
+  --bg-surface: #FFFFFF;
+  --bg-surface-2: #F0F7FF;
+  --bg-surface-3: #D6E8F5;
+  --bg-surface-hover: #D0E2F2;
+  
+  --border-hair: #B8D0E6;
+  --border-soft: #9ABDD6;
+  --border-strong: #6B9AC0;
+  
+  --text-primary: #012D61;
+  --text-secondary: #1E4A6E;
+  --text-tertiary: #5A8AB0;
+  --text-muted: #8AACC8;
+  
+  --accent: #2582A1;
+  --accent-2: #0078BF;
+  --accent-dim: #D6EEF8;
+  --accent-strong: #1A5F7A;
+  
+  --mayo-blue: #012D61;
+  --apollo-teal: #0FC5C6;
+  --cleveland-green: #028752;
+  --cleveland-orange: #F08122;
+  
+  --status-critical: #C41E3A;
+  --status-critical-bg: #FDE8EA;
+  --status-high: #E67E22;
+  --status-high-bg: #FEF0E0;
+  --status-success: #028752;
+  --status-success-bg: #E0F2E8;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #6B9AC0 transparent;
+}
+*::-webkit-scrollbar { width: 6px; height: 6px; }
+*::-webkit-scrollbar-thumb { background: #6B9AC0; border-radius: 10px; }
+*::-webkit-scrollbar-thumb:hover { background: #2582A1; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: Calibri, "Calibri Light", Candara, "Segoe UI", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+#root { height: 100vh; width: 100vw; display: flex; flex-direction: column; }
+
+.font-sans { font-family: Calibri, Candara, "Segoe UI", sans-serif !important; }
+.font-display { font-family: Calibri, Candara, "Segoe UI", sans-serif !important; font-weight: 700 !important; }
+.font-mono { font-family: "JetBrains Mono", Consolas, monospace !important; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+.leaflet-container {
+  background: #E6EFF7 !important;
+  font-family: Calibri, sans-serif !important;
+}
+.leaflet-control-zoom {
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(1,45,97,0.15) !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+.leaflet-control-zoom a {
+  background: white !important;
+  color: #012D61 !important;
+  border: 1px solid #B8D0E6 !important;
+  font-family: Calibri !important;
+  font-weight: 700 !important;
+}
+.leaflet-control-attribution {
+  background: rgba(255,255,255,0.95) !important;
+  color: #5A8AB0 !important;
+  font-family: "JetBrains Mono" !important;
+  font-size: 10px !important;
+  border-radius: 8px;
+  border: 1px solid #B8D0E6;
+  margin: 6px !important;
+}

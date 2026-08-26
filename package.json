@@ -1,0 +1,39 @@
+{
+  "name": "roumi",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "RouMi - RuralCare Route Ops Console: nearest capable hospital routing with live re-routing, A* + Dijkstra proof",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "cmdk": "^1.1.1",
+    "framer-motion": "^13.1.1",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^0.460.0",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-leaflet": "^5.0.0",
+    "react-router-dom": "^7.18.2",
+    "socket.io-client": "^4.8.3"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.22",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "jsdom": "^25.0.1",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.6.2",
+    "vite": "^6.0.5",
+    "vitest": "^3.0.8"
+  }
+}

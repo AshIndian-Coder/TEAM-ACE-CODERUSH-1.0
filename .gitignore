@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # =========================
 # Java / Spring Boot / Maven
 # =========================
@@ -23,10 +24,16 @@ logs/
 # =========================
 
 node_modules/
+=======
+# Logs
+logs
+*.log
+>>>>>>> 5a0d76d (RouMi v1.0 ready)
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+<<<<<<< HEAD
 
 # React build output
 build/
@@ -83,3 +90,22 @@ desktop.ini
 *.swp
 *.swo
 *~
+=======
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+>>>>>>> 5a0d76d (RouMi v1.0 ready)
