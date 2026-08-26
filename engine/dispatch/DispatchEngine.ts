@@ -74,9 +74,9 @@ export class DispatchEngine {
     return { ...this.weights };
   }
 
-  // Intake
+ 
   handleRequest(request: PatientRequest): DispatchResult {
-    // Validate
+   
     request.createdAt = request.createdAt || Date.now();
     request.status = 'QUEUED';
 
@@ -86,14 +86,14 @@ export class DispatchEngine {
 
     this.emit({ type: 'request_queued', request, timestamp: Date.now() });
 
-    // Try immediate dispatch
+    
     const result = this.processQueue();
 
-    // If this specific request was processed, return its result, otherwise return queued state
+    
     const res = this.dispatchResults.get(request.id);
     if (res) return res;
 
-    // Still queued
+    
     return {
       request,
       selectedHospital: null,
@@ -107,7 +107,7 @@ export class DispatchEngine {
   private processQueue(): DispatchResult | null {
     if (this.queue.isEmpty()) return null;
 
-    // Peek highest priority
+   
     const request = this.queue.peek();
     if (!request) return null;
 
@@ -119,7 +119,7 @@ export class DispatchEngine {
       this.dispatchResults.set(request.id, result);
       this.emit({ type: 'request_assigned', request: result.request, result, timestamp: Date.now() });
 
-      // Simulate immediate en-route after assignment
+     
       setTimeout(() => {
         const req = this.requests.get(request.id);
         if (req && req.status === 'ASSIGNED') {
@@ -134,7 +134,7 @@ export class DispatchEngine {
 
       return result;
     } else {
-      // Keep in queue, but log
+     
       return result;
     }
   }
@@ -145,7 +145,7 @@ export class DispatchEngine {
 
     const filtered = filterFacilities(request, hospitals, this.graph);
 
-    // Log rejections from real output
+   
     for (const f of filtered) {
       if (!f.passed) {
         const hNode = this.graph.getNode(f.hospital.nodeId);
@@ -180,7 +180,7 @@ export class DispatchEngine {
       };
     }
 
-    // Try to reserve best hospital
+   
     let selected: (typeof scored)[0] | null = null;
     let reservationSuccess = false;
 
@@ -195,11 +195,11 @@ export class DispatchEngine {
         reservationSuccess = true;
         break;
       } else {
-        // Log contention
+        
         this.decisionLog.logHospitalRejected(
           candidate.hospital.id,
           candidate.hospital.name,
-          'bed', // contention
+          'bed', 
           undefined,
           candidate.travelTime
         );
