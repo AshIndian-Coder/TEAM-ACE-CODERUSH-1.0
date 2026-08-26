@@ -1,7 +1,3 @@
-/**
- * DispatchEngine - Orchestrates: intake → queue → filter → score → reserve → assign ambulance → route → dispatch
- * Exposes handleRequest(), handleConditionChange(), compareWithNaive(), subscribe()
- */
 
 import { Graph } from '../graph/Graph';
 import { HospitalRegistry } from '../resources/HospitalRegistry';
@@ -221,7 +217,7 @@ export class DispatchEngine {
       };
     }
 
-    // Log selection with real cost
+   
     const freshHospital = this.hospitalRegistry.getById(selected.hospital.id)!;
     this.decisionLog.logHospitalSelected(
       request.id,
@@ -240,10 +236,10 @@ export class DispatchEngine {
       );
     }
 
-    // Assign ambulance - nearest AVAILABLE
+   
     const ambulance = this.findNearestAmbulance(request.originNode);
     if (!ambulance) {
-      // Release reservation if no ambulance
+      
       this.hospitalRegistry.release(
         freshHospital.id,
         request.medicineRequired,
@@ -266,7 +262,7 @@ export class DispatchEngine {
 
     this.decisionLog.logAmbulanceAssigned(request.id, ambulance.id, etaToPatient);
 
-    // Compute route from patient to hospital (primary route)
+   
     const route = astar(this.graph, request.originNode, freshHospital.nodeId);
 
     if (!route.feasible) {
@@ -330,11 +326,11 @@ export class DispatchEngine {
       }
     }
 
-    // Fallback to first available if none reachable (shouldn't happen in connected graph)
+   
     return best || available[0];
   }
 
-  // Condition change handling - detect in-flight requests whose hospital is no longer feasible
+
   handleConditionChange(event: { type: string; hospitalId?: string; edgeId?: string }): void {
     const inFlight = Array.from(this.requests.values()).filter(
       (r) => r.status === 'ASSIGNED' || r.status === 'EN_ROUTE' || r.status === 'REROUTING'
@@ -343,7 +339,7 @@ export class DispatchEngine {
     for (const req of inFlight) {
       if (!req.assignedHospitalId) continue;
 
-      // Check if this event affects this request's reserved hospital
+     
       let affected = false;
       let reason = '';
 
@@ -353,7 +349,7 @@ export class DispatchEngine {
       }
 
       if (event.edgeId) {
-        // Check if current route uses this edge
+        
         if (req.route) {
           for (let i = 0; i < req.route.length - 1; i++) {
             const eId = `${req.route[i]}->${req.route[i + 1]}`;
@@ -365,7 +361,7 @@ export class DispatchEngine {
             }
           }
         }
-        // Also check if hospital still reachable
+       
         if (!affected && req.assignedHospitalId) {
           const hosp = this.hospitalRegistry.getById(req.assignedHospitalId);
           if (hosp) {
@@ -378,7 +374,7 @@ export class DispatchEngine {
         }
       }
 
-      // Also re-evaluate hospital feasibility (specialist, bed, medicine)
+   
       if (req.assignedHospitalId) {
         const hosp = this.hospitalRegistry.getById(req.assignedHospitalId);
         if (hosp) {
@@ -386,10 +382,7 @@ export class DispatchEngine {
             affected = true;
             reason = `Specialist ${req.specialtyRequired} off-duty @ ${hosp.name}`;
           } else if (hosp.bedsAvailable < 0 && req.status !== 'ASSIGNED') {
-            // Actually beds check is more complex due to reserved count
-            // For reroute, we check if hospital still has the reserved bed (it should) OR if it became overloaded
-            // Simpler: if bedsAvailable ==0 and bedsReserved ==0 and this request is not yet consumed, it's still ok
-            // So only trigger if hospital is marked overloaded or closed
+           
             if (hosp.status !== 'operational') {
               affected = true;
               reason = `Hospital ${hosp.name} marked ${hosp.status}`;
@@ -415,7 +408,7 @@ export class DispatchEngine {
       }
     }
 
-    // After handling reroutes, try to process queue again (freed resources)
+   
     this.processQueue();
   }
 
@@ -426,19 +419,19 @@ export class DispatchEngine {
 
     this.decisionLog.logRerouteTriggered(request.id, reason, oldHospitalName);
 
-    // Release old reservation
+   
     if (oldHospital) {
       this.hospitalRegistry.release(oldHospitalId, request.medicineRequired, request.medicineQty);
       this.decisionLog.logReservationReleased(request.id, oldHospitalName);
     }
 
-    // Release ambulance? Keep same ambulance but reassign route, or find new if needed
+  
     const ambulanceId = request.assignedAmbulanceId;
     if (ambulanceId) {
-      // Keep ambulance assigned but will recompute route
+     
     }
 
-    // Update request to REROUTING
+  
     const reroutingReq: PatientRequest = {
       ...request,
       status: 'REROUTING',
@@ -525,8 +518,6 @@ export class DispatchEngine {
     const hospitals = this.hospitalRegistry.getAll();
     const naive = naiveNearestHospitalAssign(request, hospitals, this.graph);
     const optimized = this.dispatchForRequest({ ...request, id: `${request.id}-opt-${Date.now()}` });
-
-    // Rollback optimized reservation if it succeeded (since this is just comparison)
     if (optimized.success && optimized.selectedHospital) {
       this.hospitalRegistry.release(
         optimized.selectedHospital.id,
@@ -575,7 +566,6 @@ export class DispatchEngine {
     this.dispatchResults.delete(requestId);
     this.emit({ type: 'request_completed', request: req, timestamp: Date.now() });
 
-    // Process next in queue
     this.processQueue();
   }
 
@@ -620,32 +610,4 @@ export class DispatchEngine {
   }
 }
 
-/**
- * Usage example (as required by Prompt 1)
- * 
- * const graph = new Graph();
- * // ... add nodes/edges
- * const hospitals = new HospitalRegistry([...]);
- * const ambulances = new AmbulanceRegistry([...]);
- * const log = new DecisionLog();
- * const engine = new DispatchEngine(graph, hospitals, ambulances, log);
- * 
- * engine.subscribe((event) => console.log(event.type, event.request.id));
- * 
- * const result = engine.handleRequest({
- *   id: 'req-1',
- *   patientId: 'p-1',
- *   originNode: 'village-1',
- *   emergencyType: 'Cardiac Emergency',
- *   urgency: 'CRITICAL',
- *   specialtyRequired: 'Cardiologist',
- *   medicineRequired: 'Cardiac Drug X',
- *   medicineQty: 1,
- *   createdAt: Date.now(),
- *   status: 'QUEUED'
- * });
- * 
- * const comparison = engine.compareWithNaive(request);
- * console.log('Naive violated:', comparison.naive.violatedConstraint);
- * console.log('Optimized selected:', comparison.optimized.selectedHospital?.name);
- */
+
